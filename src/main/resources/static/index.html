@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Catatan Keuangan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .welcome-bar {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 16px;
+            padding: 24px 28px;
+            color: white;
+            margin-bottom: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .welcome-bar h5 { font-weight: 700; margin: 0; font-size: 1.1rem; }
+        .welcome-bar p  { opacity: 0.8; margin: 4px 0 0; font-size: 0.85rem; }
+        .welcome-icon   { font-size: 2.5rem; opacity: 0.7; }
+
+        .budget-progress { margin-top: 10px; }
+        .budget-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b; margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+<div class="d-flex">
+    <div id="sidebarMount"></div>
+    <div class="main-content flex-grow-1">
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <div>
+                <h4>Dashboard</h4>
+                <p id="periodLabel">Memuat...</p>
+            </div>
+            <div class="d-flex gap-2">
+                <select id="selBulan" class="form-select form-select-sm" style="width:130px"></select>
+                <select id="selTahun" class="form-select form-select-sm" style="width:90px"></select>
+                <button class="btn-primary btn btn-sm" onclick="loadDashboard()">Tampilkan</button>
+            </div>
+        </div>
+
+        <!-- Welcome Bar -->
+        <div class="welcome-bar">
+            <div>
+                <h5>Halo, <span id="greetUser">Admin</span>! 👋</h5>
+                <p>Berikut ringkasan keuangan Anda bulan ini</p>
+            </div>
+            <i class="bi bi-bar-chart-line-fill welcome-icon"></i>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card stat-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background:#dcfce7;color:#16a34a"><i class="bi bi-arrow-down-circle-fill"></i></div>
+                        <div>
+                            <div class="stat-label">Pemasukan</div>
+                            <div class="stat-value" id="statPemasukan">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card stat-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background:#fee2e2;color:#dc2626"><i class="bi bi-arrow-up-circle-fill"></i></div>
+                        <div>
+                            <div class="stat-label">Pengeluaran</div>
+                            <div class="stat-value" id="statPengeluaran">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card stat-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background:#ede9fe;color:#7c3aed"><i class="bi bi-piggy-bank-fill"></i></div>
+                        <div>
+                            <div class="stat-label">Sisa Budget</div>
+                            <div class="stat-value" id="statSisa">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card stat-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background:#fef9c3;color:#ca8a04"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div>
+                            <div class="stat-label">Selisih</div>
+                            <div class="stat-value" id="statSelisih">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Progress -->
+        <div class="card p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0">Penggunaan Budget</h6>
+                <span id="budgetPct" class="badge" style="background:#ede9fe;color:#7c3aed;padding:5px 12px;border-radius:20px;font-size:0.78rem">0%</span>
+            </div>
+            <div class="budget-label">
+                <span id="budgetUsed">Terpakai: Rp 0</span>
+                <span id="budgetTotal">Budget: Rp 0</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="budgetBar" style="width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6)"></div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-3">
+            <div class="col-md-5">
+                <div class="card p-4">
+                    <h6 class="fw-bold mb-1">Pengeluaran per Kategori</h6>
+                    <p style="font-size:0.78rem;color:#94a3b8;margin-bottom:16px">Bulan ini</p>
+                    <canvas id="chartPie"></canvas>
+                    <div id="noDataPie" class="empty-state d-none">
+                        <i class="bi bi-pie-chart"></i>
+                        <p>Belum ada data pengeluaran</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card p-4">
+                    <h6 class="fw-bold mb-1">Pemasukan vs Pengeluaran</h6>
+                    <p style="font-size:0.78rem;color:#94a3b8;margin-bottom:16px">Sepanjang tahun <span id="tahunLabel"></span></p>
+                    <canvas id="chartBar"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="/assets/app.js"></script>
+<script>
+    checkLogin();
+    renderSidebar('dashboard');
+    document.getElementById('greetUser').textContent = localStorage.getItem('username') || 'Admin';
+
+    const now = new Date();
+    fillBulanSelect(document.getElementById('selBulan'), now.getMonth() + 1);
+    fillTahunSelect(document.getElementById('selTahun'), now.getFullYear());
+
+    let pieChart, barChart;
+
+    async function loadDashboard() {
+        const bulan = +document.getElementById('selBulan').value;
+        const tahun = +document.getElementById('selTahun').value;
+        document.getElementById('periodLabel').textContent = `${BULAN_NAMA[bulan]} ${tahun}`;
+        document.getElementById('tahunLabel').textContent = tahun;
+
+        try {
+            const d = await apiGet(`/api/dashboard/bulan/${bulan}/tahun/${tahun}`);
+
+            document.getElementById('statPemasukan').textContent   = formatRupiah(d.totalPemasukan);
+            document.getElementById('statPengeluaran').textContent = formatRupiah(d.totalPengeluaran);
+            document.getElementById('statSisa').textContent        = formatRupiah(d.sisaBudget);
+            document.getElementById('statSelisih').textContent     = formatRupiah(d.selisih);
+
+            // Budget progress
+            const budgetRes = await apiGet(`/api/budget/bulan/${bulan}/tahun/${tahun}`).catch(() => null);
+            if (budgetRes) {
+                const pct = Math.min(100, Math.round((d.totalPengeluaran / budgetRes.jumlahBudget) * 100));
+                document.getElementById('budgetPct').textContent  = pct + '%';
+                document.getElementById('budgetUsed').textContent = 'Terpakai: ' + formatRupiah(d.totalPengeluaran);
+                document.getElementById('budgetTotal').textContent = 'Budget: ' + formatRupiah(budgetRes.jumlahBudget);
+                const bar = document.getElementById('budgetBar');
+                bar.style.width = pct + '%';
+                bar.style.background = pct >= 90 ? '#ef4444' : pct >= 70 ? '#f59e0b' : 'linear-gradient(90deg,#6366f1,#8b5cf6)';
+            }
+
+            // Pie chart
+            const pieLabels = Object.keys(d.pengeluaranPerKategori);
+            const pieData   = Object.values(d.pengeluaranPerKategori);
+            const colors    = ['#6366f1','#8b5cf6','#06b6d4','#10b981','#f59e0b','#ef4444','#ec4899','#14b8a6'];
+
+            if (pieLabels.length === 0) {
+                document.getElementById('noDataPie').classList.remove('d-none');
+                document.getElementById('chartPie').style.display = 'none';
+            } else {
+                document.getElementById('noDataPie').classList.add('d-none');
+                document.getElementById('chartPie').style.display = '';
+                if (pieChart) pieChart.destroy();
+                pieChart = new Chart(document.getElementById('chartPie'), {
+                    type: 'doughnut',
+                    data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: colors, borderWidth: 0, hoverOffset: 6 }] },
+                    options: {
+                        cutout: '65%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, pointStyleWidth: 8, font: { size: 11 } } }
+                        }
+                    }
+                });
+            }
+
+            // Bar chart
+            if (barChart) barChart.destroy();
+            barChart = new Chart(document.getElementById('chartBar'), {
+                type: 'bar',
+                data: {
+                    labels: d.ringkasanPerBulan.map(r => BULAN_NAMA[r.bulan].substring(0,3)),
+                    datasets: [
+                        { label: 'Pemasukan',    data: d.ringkasanPerBulan.map(r => r.pemasukan),    backgroundColor: '#10b981', borderRadius: 6, borderSkipped: false },
+                        { label: 'Pengeluaran',  data: d.ringkasanPerBulan.map(r => r.pengeluaran),  backgroundColor: '#f87171', borderRadius: 6, borderSkipped: false }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } },
+                        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                    },
+                    plugins: { legend: { labels: { usePointStyle: true, pointStyleWidth: 8, font: { size: 11 } } } }
+                }
+            });
+
+        } catch (err) {
+            showToast('Gagal memuat data dashboard', 'danger');
+        }
+    }
+
+    loadDashboard();
+</script>
+</body>
+</html>

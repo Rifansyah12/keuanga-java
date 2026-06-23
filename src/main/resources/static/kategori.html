@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori - Catatan Keuangan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background: #f5f6fa; }
+        .navbar { background: #4f46e5 !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark px-4 py-3">
+        <a href="/index.html" class="navbar-brand fw-bold"><i class="bi bi-wallet2 me-2"></i>Catatan Keuangan</a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/index.html" class="text-white text-decoration-none small">Dashboard</a>
+            <a href="/transaksi.html" class="text-white text-decoration-none small">Transaksi</a>
+            <a href="/budget.html" class="text-white text-decoration-none small">Budget</a>
+            <span class="text-white small"><i class="bi bi-person-circle me-1"></i><span id="usernameDisplay"></span></span>
+            <button class="btn btn-sm btn-outline-light" onclick="logout()">Keluar</button>
+        </div>
+    </nav>
+
+    <div class="container p-4" style="max-width: 700px">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Kategori</h5>
+            <button class="btn btn-primary btn-sm" onclick="openModal()">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
+            </button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama Kategori</th>
+                            <th>Jenis</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelBody">
+                        <tr><td colspan="3" class="text-center text-muted py-4">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalKategori" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Tambah Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="kategoriId">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Kategori</label>
+                        <input type="text" class="form-control" id="inputNama" placeholder="Contoh: Makan, Gaji, Transport">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jenis</label>
+                        <select class="form-select" id="inputJenis">
+                            <option value="PEMASUKAN">PEMASUKAN</option>
+                            <option value="PENGELUARAN">PENGELUARAN</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary btn-sm" onclick="simpan()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/app.js"></script>
+    <script>
+        checkLogin();
+        const modal = new bootstrap.Modal(document.getElementById('modalKategori'));
+
+        async function load() {
+            const data = await apiGet('/api/kategori');
+            const tbody = document.getElementById('tabelBody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Belum ada kategori</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(k => `
+                <tr>
+                    <td>${k.nama}</td>
+                    <td><span class="badge ${k.jenis === 'PEMASUKAN' ? 'bg-success' : 'bg-danger'}">${k.jenis}</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="edit(${k.id},'${k.nama}','${k.jenis}')">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="hapus(${k.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openModal() {
+            document.getElementById('kategoriId').value = '';
+            document.getElementById('modalTitle').textContent = 'Tambah Kategori';
+            document.getElementById('inputNama').value = '';
+            document.getElementById('inputJenis').value = 'PENGELUARAN';
+            modal.show();
+        }
+
+        function edit(id, nama, jenis) {
+            document.getElementById('kategoriId').value = id;
+            document.getElementById('modalTitle').textContent = 'Edit Kategori';
+            document.getElementById('inputNama').value = nama;
+            document.getElementById('inputJenis').value = jenis;
+            modal.show();
+        }
+
+        async function simpan() {
+            const id = document.getElementById('kategoriId').value;
+            const payload = {
+                nama: document.getElementById('inputNama').value,
+                jenis: document.getElementById('inputJenis').value
+            };
+            try {
+                if (id) await apiPut(`/api/kategori/${id}`, payload);
+                else await apiPost('/api/kategori', payload);
+                modal.hide();
+                showToast('Kategori disimpan');
+                load();
+            } catch { showToast('Gagal menyimpan', 'danger'); }
+        }
+
+        async function hapus(id) {
+            if (!confirm('Hapus kategori ini?')) return;
+            try {
+                await apiDelete(`/api/kategori/${id}`);
+                showToast('Kategori dihapus');
+                load();
+            } catch { showToast('Gagal menghapus', 'danger'); }
+        }
+
+        load();
+    </script>
+</body>
+</html>

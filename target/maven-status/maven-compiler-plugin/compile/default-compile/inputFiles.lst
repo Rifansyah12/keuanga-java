@@ -1,0 +1,17 @@
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/entity/Transaksi.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/controller/DashboardController.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/BudgetingApplication.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/repository/BudgetRepository.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/entity/Kategori.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/entity/Budget.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/repository/KategoriRepository.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/service/TransaksiService.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/service/BudgetService.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/service/KategoriService.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/entity/JenisTransaksi.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/controller/KategoriController.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/controller/TransaksiController.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/config/CorsConfig.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/controller/BudgetController.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/controller/AuthController.java
+/Users/fenrycopratama/Projects/tugas-nana/pitama-tugas-java/src/main/java/com/tugas/budgeting/repository/TransaksiRepository.java
