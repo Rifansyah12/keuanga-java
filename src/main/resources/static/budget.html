@@ -3,146 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget - Catatan Keuangan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Budget — Catatan Keuangan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/style.css" rel="stylesheet">
     <style>
-        body { background: #f5f6fa; }
-        .navbar { background: #4f46e5 !important; }
+        .budget-set-card {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            border-radius: 16px;
+            padding: 28px;
+            color: white;
+            margin-bottom: 24px;
+        }
+        .budget-set-card h6 { font-weight: 700; margin-bottom: 18px; opacity: 0.9; }
+        .budget-set-card .form-control,
+        .budget-set-card .form-select {
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            color: white;
+            border-radius: 10px;
+        }
+        .budget-set-card .form-control::placeholder { color: rgba(255,255,255,0.5); }
+        .budget-set-card .form-control:focus,
+        .budget-set-card .form-select:focus {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: none; color: white;
+        }
+        .budget-set-card .form-select option { background: #4338ca; color: white; }
+        .budget-set-card .form-label { color: rgba(255,255,255,0.8); font-size: 0.78rem; }
+        .btn-save-budget {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-save-budget:hover { background: #059669; transform: translateY(-1px); }
+
+        .budget-item {
+            display: flex; align-items: center; gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .budget-item:last-child { border-bottom: none; }
+        .budget-month-badge {
+            min-width: 56px; height: 56px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-radius: 14px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .budget-month-badge span:first-child { font-size: 1rem; font-weight: 800; color: #059669; line-height: 1; }
+        .budget-month-badge span:last-child  { font-size: 0.65rem; color: #10b981; font-weight: 600; }
+        .budget-info { flex: 1; }
+        .budget-name  { font-weight: 600; font-size: 0.9rem; color: #1e293b; }
+        .budget-amount { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
+        .budget-bar-wrap { min-width: 120px; }
+        .usage-pct { font-size: 0.72rem; color: #94a3b8; margin-top: 4px; text-align: right; }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark px-4 py-3">
-        <a href="/index.html" class="navbar-brand fw-bold"><i class="bi bi-wallet2 me-2"></i>Catatan Keuangan</a>
-        <div class="d-flex align-items-center gap-3">
-            <a href="/index.html" class="text-white text-decoration-none small">Dashboard</a>
-            <a href="/transaksi.html" class="text-white text-decoration-none small">Transaksi</a>
-            <a href="/kategori.html" class="text-white text-decoration-none small">Kategori</a>
-            <span class="text-white small"><i class="bi bi-person-circle me-1"></i><span id="usernameDisplay"></span></span>
-            <button class="btn btn-sm btn-outline-light" onclick="logout()">Keluar</button>
+<div class="d-flex">
+    <div id="sidebarMount"></div>
+    <div class="main-content flex-grow-1">
+
+        <div class="topbar">
+            <div>
+                <h4>Budget</h4>
+                <p>Atur batas pengeluaran bulanan Anda</p>
+            </div>
         </div>
-    </nav>
 
-    <div class="container p-4" style="max-width: 700px">
-        <h5 class="fw-bold mb-3">Atur Budget Bulanan</h5>
-
-        <!-- Form Set Budget -->
-        <div class="card shadow-sm p-4 mb-4">
-            <h6 class="fw-semibold mb-3">Set Budget Bulan Ini</h6>
+        <!-- Set Budget Card -->
+        <div class="budget-set-card">
+            <h6><i class="bi bi-plus-circle me-2"></i>Set Budget Baru</h6>
             <div class="row g-2 align-items-end">
                 <div class="col">
-                    <label class="form-label small">Bulan</label>
+                    <label class="form-label">Bulan</label>
                     <select class="form-select" id="inputBulan"></select>
                 </div>
                 <div class="col">
-                    <label class="form-label small">Tahun</label>
+                    <label class="form-label">Tahun</label>
                     <select class="form-select" id="inputTahun"></select>
                 </div>
-                <div class="col-12 col-md-5">
-                    <label class="form-label small">Jumlah Budget (Rp)</label>
-                    <input type="number" class="form-control" id="inputJumlah" placeholder="3000000" min="0">
+                <div class="col-md-4">
+                    <label class="form-label">Jumlah Budget (Rp)</label>
+                    <input type="number" class="form-control" id="inputJumlah" placeholder="Contoh: 3000000">
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-primary w-100" onclick="simpanBudget()">
-                        <i class="bi bi-save me-1"></i> Simpan
+                    <button class="btn-save-budget" onclick="simpanBudget()">
+                        <i class="bi bi-check-lg me-1"></i>Simpan
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Daftar Budget -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-white fw-semibold">Riwayat Budget</div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Bulan</th>
-                            <th>Tahun</th>
-                            <th class="text-end">Budget</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelBody">
-                        <tr><td colspan="4" class="text-center text-muted py-4">Memuat data...</td></tr>
-                    </tbody>
-                </table>
+        <!-- Budget List -->
+        <div class="card" style="border-radius:16px;overflow:hidden">
+            <div style="padding:18px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between">
+                <h6 class="fw-bold mb-0">Riwayat Budget</h6>
+                <span id="budgetCount" style="background:#ede9fe;color:#7c3aed;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:600">0 budget</span>
+            </div>
+            <div id="budgetList">
+                <div class="empty-state"><i class="bi bi-piggy-bank"></i><p>Belum ada budget tersimpan</p></div>
             </div>
         </div>
+
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/app.js"></script>
-    <script>
-        checkLogin();
-        const now = new Date();
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+    checkLogin();
+    renderSidebar('budget');
+    const now = new Date();
 
-        // Isi dropdown
-        const selBulan = document.getElementById('inputBulan');
-        const selTahun = document.getElementById('inputTahun');
+    fillBulanSelect(document.getElementById('inputBulan'), now.getMonth() + 1);
+    fillTahunSelect(document.getElementById('inputTahun'), now.getFullYear());
 
-        BULAN_NAMA.slice(1).forEach((n, i) => {
-            const o = new Option(n, i + 1);
-            if (i + 1 === now.getMonth() + 1) o.selected = true;
-            selBulan.add(o);
-        });
-        for (let y = now.getFullYear(); y >= now.getFullYear() - 4; y--) {
-            const o = new Option(y, y);
-            if (y === now.getFullYear()) o.selected = true;
-            selTahun.add(o);
+    async function load() {
+        const data = await apiGet('/api/budget');
+        const list = document.getElementById('budgetList');
+        document.getElementById('budgetCount').textContent = `${data.length} budget`;
+
+        if (!data.length) {
+            list.innerHTML = `<div class="empty-state"><i class="bi bi-piggy-bank"></i><p>Belum ada budget tersimpan</p></div>`;
+            return;
         }
 
-        async function load() {
-            const data = await apiGet('/api/budget');
-            const tbody = document.getElementById('tabelBody');
-            if (!data.length) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Belum ada budget tersimpan</td></tr>';
-                return;
-            }
-            // Urutkan terbaru dulu
-            data.sort((a, b) => b.tahun - a.tahun || b.bulan - a.bulan);
-            tbody.innerHTML = data.map(b => `
-                <tr>
-                    <td>${BULAN_NAMA[b.bulan]}</td>
-                    <td>${b.tahun}</td>
-                    <td class="text-end fw-semibold">${formatRupiah(b.jumlahBudget)}</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-outline-danger" onclick="hapus(${b.id})">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
+        data.sort((a, b) => b.tahun - a.tahun || b.bulan - a.bulan);
 
-        async function simpanBudget() {
-            const payload = {
-                bulan: parseInt(selBulan.value),
-                tahun: parseInt(selTahun.value),
-                jumlahBudget: parseFloat(document.getElementById('inputJumlah').value)
-            };
-            if (!payload.jumlahBudget || payload.jumlahBudget <= 0) {
-                showToast('Masukkan jumlah budget yang valid', 'warning');
-                return;
-            }
+        // Ambil data pengeluaran untuk setiap budget
+        const items = await Promise.all(data.map(async b => {
             try {
-                await apiPost('/api/budget', payload);
-                showToast('Budget disimpan');
-                document.getElementById('inputJumlah').value = '';
-                load();
-            } catch { showToast('Gagal menyimpan budget', 'danger'); }
-        }
+                const dash = await apiGet(`/api/dashboard/bulan/${b.bulan}/tahun/${b.tahun}`);
+                const pct  = Math.min(100, Math.round((dash.totalPengeluaran / b.jumlahBudget) * 100));
+                return { ...b, pengeluaran: dash.totalPengeluaran, pct };
+            } catch { return { ...b, pengeluaran: 0, pct: 0 }; }
+        }));
 
-        async function hapus(id) {
-            if (!confirm('Hapus budget ini?')) return;
-            try {
-                await apiDelete(`/api/budget/${id}`);
-                showToast('Budget dihapus');
-                load();
-            } catch { showToast('Gagal menghapus', 'danger'); }
-        }
+        list.innerHTML = items.map(b => {
+            const barColor = b.pct >= 90 ? '#ef4444' : b.pct >= 70 ? '#f59e0b' : '#6366f1';
+            const bulanAbbr = BULAN_NAMA[b.bulan].substring(0,3).toUpperCase();
+            return `
+            <div class="budget-item">
+                <div class="budget-month-badge">
+                    <span>${bulanAbbr}</span>
+                    <span>${b.tahun}</span>
+                </div>
+                <div class="budget-info">
+                    <div class="budget-name">${BULAN_NAMA[b.bulan]} ${b.tahun}</div>
+                    <div class="budget-amount">${formatRupiah(b.pengeluaran)} dari ${formatRupiah(b.jumlahBudget)}</div>
+                </div>
+                <div class="budget-bar-wrap">
+                    <div class="progress" style="height:6px;width:120px">
+                        <div class="progress-bar" style="width:${b.pct}%;background:${barColor}"></div>
+                    </div>
+                    <div class="usage-pct">${b.pct}% terpakai</div>
+                </div>
+                <button class="btn btn-outline-danger btn-sm ms-2" onclick="hapus(${b.id})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>`;
+        }).join('');
+    }
 
-        load();
-    </script>
+    async function simpanBudget() {
+        const jumlah = parseFloat(document.getElementById('inputJumlah').value);
+        if (!jumlah || jumlah <= 0) { showToast('Masukkan jumlah budget yang valid', 'warning'); return; }
+        const payload = {
+            bulan: parseInt(document.getElementById('inputBulan').value),
+            tahun: parseInt(document.getElementById('inputTahun').value),
+            jumlahBudget: jumlah
+        };
+        try {
+            await apiPost('/api/budget', payload);
+            document.getElementById('inputJumlah').value = '';
+            showToast('Budget berhasil disimpan');
+            load();
+        } catch { showToast('Gagal menyimpan budget', 'danger'); }
+    }
+
+    async function hapus(id) {
+        if (!confirm('Hapus budget ini?')) return;
+        try {
+            await apiDelete(`/api/budget/${id}`);
+            showToast('Budget dihapus');
+            load();
+        } catch { showToast('Gagal menghapus', 'danger'); }
+    }
+
+    load();
+</script>
 </body>
 </html>

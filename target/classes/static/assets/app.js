@@ -18,10 +18,10 @@ function logout() {
 // Inject sidebar
 function renderSidebar(activePage) {
     const links = [
-        { href: '/index.html',     icon: 'bi-grid-1x2-fill',   label: 'Dashboard',   id: 'dashboard' },
-        { href: '/transaksi.html', icon: 'bi-arrow-left-right', label: 'Transaksi',   id: 'transaksi' },
-        { href: '/kategori.html',  icon: 'bi-tags-fill',        label: 'Kategori',    id: 'kategori' },
-        { href: '/budget.html',    icon: 'bi-piggy-bank-fill',  label: 'Budget',      id: 'budget' },
+        { href: '/index.html',     icon: 'bi-grid-1x2',        label: 'Dashboard',  id: 'dashboard' },
+        { href: '/transaksi.html', icon: 'bi-arrow-left-right', label: 'Transaksi',  id: 'transaksi' },
+        { href: '/kategori.html',  icon: 'bi-tag',              label: 'Kategori',   id: 'kategori' },
+        { href: '/budget.html',    icon: 'bi-piggy-bank',       label: 'Budget',     id: 'budget' },
     ];
 
     const username = localStorage.getItem('username') || 'Admin';
@@ -31,11 +31,13 @@ function renderSidebar(activePage) {
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-icon"><i class="bi bi-wallet2"></i></div>
-            <h6>Catatan Keuangan</h6>
-            <p>Personal Finance</p>
+            <div>
+                <h6>CatatKeu</h6>
+                <p>Personal Finance</p>
+            </div>
         </div>
         <nav class="sidebar-nav">
-            <div class="nav-label">Menu</div>
+            <div class="nav-label">Main Menu</div>
             ${links.map(l => `
                 <a href="${l.href}" class="${l.id === activePage ? 'active' : ''}">
                     <i class="bi ${l.icon}"></i> ${l.label}
@@ -45,7 +47,7 @@ function renderSidebar(activePage) {
         <div class="sidebar-footer">
             <div class="user-info">
                 <div class="user-avatar">${initial}</div>
-                <div class="flex-grow-1">
+                <div style="flex:1;min-width:0">
                     <div class="user-name">${username}</div>
                     <div class="user-role">Administrator</div>
                 </div>
