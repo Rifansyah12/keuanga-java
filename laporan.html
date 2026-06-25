@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Laporan UAS - Aplikasi Catatan Keuangan Pribadi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Arial:wght@400;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12pt;
+    line-height: 1.8;
+    color: #000;
+    background: #fff;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 30mm 30mm 25mm 40mm;
+    background: white;
+  }
+
+  /* Cover */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 230mm;
+    text-align: center;
+    page-break-after: always;
+  }
+
+  .cover img { width: 80px; margin-bottom: 14px; }
+  .cover .univ { font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cover .univ-sub { font-size: 11pt; margin-top: 2px; }
+  .cover hr { width: 100%; border: 1.5px solid #000; margin: 14px 0; }
+  .cover .judul { font-size: 16pt; font-weight: bold; text-transform: uppercase; margin: 18px 0 10px; line-height: 1.5; }
+  .cover .subjudul { font-size: 12pt; font-style: italic; margin-bottom: 30px; }
+  .cover .label { font-size: 11pt; margin-top: 30px; }
+  .cover .nama  { font-size: 13pt; font-weight: bold; margin-top: 8px; }
+  .cover .nim   { font-size: 12pt; }
+  .cover .prodi { font-size: 12pt; margin-top: 20px; font-weight: bold; }
+  .cover .tahun { font-size: 12pt; margin-top: 4px; }
+
+  /* TOC */
+  .toc-page { page-break-after: always; }
+  .toc h2 { text-align: center; font-size: 14pt; text-transform: uppercase; margin-bottom: 20px; }
+  .toc-item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .toc-item .dots { flex: 1; border-bottom: 1px dotted #333; margin: 0 6px 4px; }
+  .toc-bab  { font-weight: bold; margin-top: 10px; }
+  .toc-sub  { padding-left: 20px; }
+
+  /* Content */
+  h1 { font-size: 14pt; font-weight: bold; text-align: center; text-transform: uppercase; margin: 0 0 20px; }
+  h2 { font-size: 13pt; font-weight: bold; margin: 24px 0 10px; }
+  h3 { font-size: 12pt; font-weight: bold; margin: 18px 0 8px; }
+  h4 { font-size: 12pt; font-weight: bold; font-style: italic; margin: 14px 0 6px; }
+
+  p  { margin-bottom: 10px; text-align: justify; }
+
+  .bab-header {
+    text-align: center;
+    margin-bottom: 20px;
+    page-break-before: always;
+  }
+  .bab-header:first-of-type { page-break-before: avoid; }
+  .bab-num  { font-size: 14pt; font-weight: bold; }
+  .bab-judul { font-size: 14pt; font-weight: bold; text-transform: uppercase; }
+
+  code, pre {
+    font-family: 'Courier New', monospace;
+    font-size: 9.5pt;
+  }
+
+  pre {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-left: 4px solid #333;
+    padding: 10px 14px;
+    margin: 10px 0 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px;
+    font-size: 11pt;
+  }
+  th { background: #333; color: white; padding: 8px 10px; text-align: left; }
+  td { padding: 7px 10px; border: 1px solid #bbb; }
+  tr:nth-child(even) td { background: #f9f9f9; }
+
+  .caption { font-size: 10.5pt; text-align: center; font-style: italic; margin: -10px 0 14px; color: #444; }
+
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 5px; }
+
+  .highlight { background: #fffbe6; border-left: 4px solid #f59e0b; padding: 10px 14px; margin: 12px 0; font-style: italic; }
+
+  .page-break { page-break-before: always; }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 20mm 25mm 20mm 35mm; margin: 0; width: 100%; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HALAMAN COVER
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="cover">
+  <div class="univ">Universitas [Nama Universitas]</div>
+  <div class="univ-sub">Fakultas [Nama Fakultas] &mdash; Program Studi Teknik Informatika</div>
+  <hr>
+  <div class="judul">Aplikasi Catatan Keuangan Pribadi<br>Berbasis Web</div>
+  <div class="subjudul">Laporan Ujian Akhir Semester<br>Mata Kuliah Pemrograman Java Lanjut</div>
+  <div class="label">Disusun Oleh:</div>
+  <div class="nama">[Nama Mahasiswa]</div>
+  <div class="nim">NIM: [NIM Mahasiswa]</div>
+  <div class="prodi">Program Studi Teknik Informatika</div>
+  <div class="tahun">2026</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     DAFTAR ISI
+═══════════════════════════════════════════════════════════ -->
+<div class="page toc-page">
+<div class="toc">
+  <h2>Daftar Isi</h2>
+
+  <div class="toc-item toc-bab"><span>BAB I &nbsp; PENDAHULUAN</span><span class="dots"></span><span>1</span></div>
+  <div class="toc-item toc-sub"><span>1.1 Latar Belakang</span><span class="dots"></span><span>1</span></div>
+  <div class="toc-item toc-sub"><span>1.2 Tujuan</span><span class="dots"></span><span>2</span></div>
+  <div class="toc-item toc-sub"><span>1.3 Ruang Lingkup</span><span class="dots"></span><span>2</span></div>
+
+  <div class="toc-item toc-bab"><span>BAB II &nbsp; LANDASAN TEORI</span><span class="dots"></span><span>3</span></div>
+  <div class="toc-item toc-sub"><span>2.1 Object Oriented Programming (OOP)</span><span class="dots"></span><span>3</span></div>
+  <div class="toc-item toc-sub"><span>2.2 Collection Framework</span><span class="dots"></span><span>3</span></div>
+  <div class="toc-item toc-sub"><span>2.3 Lambda Expression</span><span class="dots"></span><span>4</span></div>
+  <div class="toc-item toc-sub"><span>2.4 Stream API</span><span class="dots"></span><span>4</span></div>
+  <div class="toc-item toc-sub"><span>2.5 RESTful API</span><span class="dots"></span><span>4</span></div>
+  <div class="toc-item toc-sub"><span>2.6 Spring Boot</span><span class="dots"></span><span>5</span></div>
+  <div class="toc-item toc-sub"><span>2.7 Spring Data JPA</span><span class="dots"></span><span>5</span></div>
+  <div class="toc-item toc-sub"><span>2.8 MySQL</span><span class="dots"></span><span>5</span></div>
+
+  <div class="toc-item toc-bab"><span>BAB III &nbsp; ANALISIS DAN PERANCANGAN</span><span class="dots"></span><span>6</span></div>
+  <div class="toc-item toc-sub"><span>3.1 Analisis Kebutuhan</span><span class="dots"></span><span>6</span></div>
+  <div class="toc-item toc-sub"><span>3.2 Perancangan Database</span><span class="dots"></span><span>7</span></div>
+  <div class="toc-item toc-sub"><span>3.3 Perancangan Arsitektur Sistem</span><span class="dots"></span><span>8</span></div>
+  <div class="toc-item toc-sub"><span>3.4 Perancangan REST API Endpoint</span><span class="dots"></span><span>9</span></div>
+
+  <div class="toc-item toc-bab"><span>BAB IV &nbsp; IMPLEMENTASI</span><span class="dots"></span><span>10</span></div>
+  <div class="toc-item toc-sub"><span>4.1 Struktur Proyek</span><span class="dots"></span><span>10</span></div>
+  <div class="toc-item toc-sub"><span>4.2 Implementasi OOP</span><span class="dots"></span><span>11</span></div>
+  <div class="toc-item toc-sub"><span>4.3 Implementasi Collection Framework</span><span class="dots"></span><span>13</span></div>
+  <div class="toc-item toc-sub"><span>4.4 Implementasi Lambda &amp; Stream API</span><span class="dots"></span><span>14</span></div>
+  <div class="toc-item toc-sub"><span>4.5 Implementasi JPA Repository</span><span class="dots"></span><span>16</span></div>
+  <div class="toc-item toc-sub"><span>4.6 Implementasi RESTful API</span><span class="dots"></span><span>17</span></div>
+  <div class="toc-item toc-sub"><span>4.7 Implementasi Front-End</span><span class="dots"></span><span>19</span></div>
+  <div class="toc-item toc-sub"><span>4.8 Login dan Dashboard (Poin Plus)</span><span class="dots"></span><span>20</span></div>
+
+  <div class="toc-item toc-bab"><span>BAB V &nbsp; PENGUJIAN</span><span class="dots"></span><span>21</span></div>
+  <div class="toc-item toc-sub"><span>5.1 Pengujian REST API</span><span class="dots"></span><span>21</span></div>
+  <div class="toc-item toc-sub"><span>5.2 Pengujian Antarmuka</span><span class="dots"></span><span>22</span></div>
+
+  <div class="toc-item toc-bab"><span>BAB VI &nbsp; KESIMPULAN DAN SARAN</span><span class="dots"></span><span>23</span></div>
+  <div class="toc-item toc-sub"><span>6.1 Kesimpulan</span><span class="dots"></span><span>23</span></div>
+  <div class="toc-item toc-sub"><span>6.2 Saran</span><span class="dots"></span><span>23</span></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB I — PENDAHULUAN
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB I</div>
+  <div class="bab-judul">Pendahuluan</div>
+</div>
+
+<h2>1.1 Latar Belakang</h2>
+<p>
+Pengelolaan keuangan pribadi merupakan hal yang sangat penting dalam kehidupan sehari-hari.
+Banyak individu kesulitan dalam memantau pemasukan dan pengeluaran mereka secara teratur
+karena tidak adanya sistem yang terorganisir. Kebiasaan mencatat keuangan secara manual
+dinilai kurang efisien dan rentan terhadap kesalahan serta kehilangan data.
+</p>
+<p>
+Perkembangan teknologi informasi, khususnya di bidang pemrograman berbasis web, membuka
+peluang untuk membangun sistem catatan keuangan yang mudah digunakan, terstruktur,
+dan dapat diakses kapan saja melalui browser. Dengan memanfaatkan teknologi Java khususnya
+Spring Boot sebagai back-end dan antarmuka web sebagai front-end, sebuah aplikasi catatan
+keuangan pribadi dapat dikembangkan dengan efisien.
+</p>
+<p>
+Dalam rangka memenuhi tugas Ujian Akhir Semester mata kuliah Pemrograman Java Lanjut,
+penulis mengembangkan sebuah aplikasi bernama <strong>CatatKeu</strong> — Catatan Keuangan
+Pribadi berbasis web. Aplikasi ini mengimplementasikan seluruh konsep yang telah dipelajari
+selama perkuliahan, mulai dari OOP, Collection Framework, Lambda Expression, Stream API,
+RESTful API, Spring Boot, JPA Repository, hingga integrasi front-end dan back-end.
+</p>
+
+<h2>1.2 Tujuan</h2>
+<p>Tujuan dari pengembangan aplikasi ini adalah:</p>
+<ol>
+  <li>Membangun aplikasi web catatan keuangan pribadi yang fungsional dan dapat digunakan secara nyata.</li>
+  <li>Mengimplementasikan konsep Object Oriented Programming (OOP) dalam perancangan entitas sistem.</li>
+  <li>Menerapkan Collection Framework (List, Set, Map) dalam pengelolaan data.</li>
+  <li>Menggunakan Lambda Expression dan Stream API untuk pemrosesan dan analisis data keuangan.</li>
+  <li>Membangun RESTful API dengan Spring Boot sebagai back-end server.</li>
+  <li>Memanfaatkan Spring Data JPA sebagai layer akses database MySQL.</li>
+  <li>Mengintegrasikan front-end HTML/CSS/JavaScript dengan back-end Spring Boot.</li>
+</ol>
+
+<h2>1.3 Ruang Lingkup</h2>
+<p>Ruang lingkup aplikasi CatatKeu meliputi:</p>
+<ul>
+  <li><strong>Manajemen Kategori</strong> &mdash; Pengelolaan kategori transaksi (pemasukan dan pengeluaran).</li>
+  <li><strong>Manajemen Transaksi</strong> &mdash; Pencatatan pemasukan dan pengeluaran harian dengan filter per bulan.</li>
+  <li><strong>Manajemen Budget</strong> &mdash; Pengaturan batas pengeluaran per bulan beserta visualisasi penggunaan.</li>
+  <li><strong>Dashboard</strong> &mdash; Ringkasan keuangan bulanan dengan grafik interaktif (Chart.js).</li>
+  <li><strong>Login</strong> &mdash; Sistem autentikasi sederhana berbasis username dan password.</li>
+</ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB II — LANDASAN TEORI
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB II</div>
+  <div class="bab-judul">Landasan Teori</div>
+</div>
+
+<h2>2.1 Object Oriented Programming (OOP)</h2>
+<p>
+Object Oriented Programming (OOP) adalah paradigma pemrograman yang mengorganisir kode
+ke dalam objek-objek yang merepresentasikan entitas dunia nyata. OOP memiliki empat pilar
+utama yaitu <em>Encapsulation</em>, <em>Inheritance</em>, <em>Polymorphism</em>, dan <em>Abstraction</em>.
+</p>
+<p>
+Dalam aplikasi ini, OOP diterapkan melalui pemisahan lapisan yang jelas antara Entity
+(model data), Repository (akses data), Service (logika bisnis), dan Controller (REST endpoint).
+Setiap entitas seperti <code>Kategori</code>, <code>Transaksi</code>, dan <code>Budget</code>
+direpresentasikan sebagai class Java dengan atribut dan method yang terenkapsulasi.
+</p>
+
+<h2>2.2 Collection Framework</h2>
+<p>
+Java Collection Framework menyediakan sekumpulan antarmuka dan kelas untuk menyimpan dan
+memanipulasi kelompok objek. Tiga struktur data utama yang digunakan dalam aplikasi ini adalah:
+</p>
+<ul>
+  <li><strong>List</strong> &mdash; Struktur data berurutan yang memungkinkan duplikasi. Digunakan untuk menyimpan daftar transaksi, kategori, dan budget dari database.</li>
+  <li><strong>Map</strong> &mdash; Struktur key-value pair. Digunakan untuk mengelompokkan total pengeluaran per kategori (<code>Map&lt;String, Double&gt;</code>) dan ringkasan bulanan.</li>
+  <li><strong>Set</strong> &mdash; Struktur data tanpa duplikasi. Digunakan untuk mengambil kumpulan tahun unik dari seluruh transaksi.</li>
+</ul>
+
+<h2>2.3 Lambda Expression</h2>
+<p>
+Lambda Expression merupakan fitur yang diperkenalkan pada Java 8 yang memungkinkan penulisan
+fungsi anonim secara ringkas. Lambda mempermudah penulisan kode yang sebelumnya memerlukan
+kelas anonim yang panjang, terutama dalam operasi koleksi dan Stream.
+</p>
+<p>
+Sintaks dasar: <code>(parameter) -&gt; ekspresi</code>. Contoh dalam aplikasi:
+<code>.filter(t -&gt; t.getKategori().getJenis() == JenisTransaksi.PENGELUARAN)</code>.
+</p>
+
+<h2>2.4 Stream API</h2>
+<p>
+Stream API (Java 8+) menyediakan cara fungsional untuk memproses koleksi data secara
+deklaratif. Stream mendukung operasi <em>intermediate</em> (filter, map, sorted) dan
+operasi <em>terminal</em> (collect, count, sum, average). Dalam aplikasi ini, Stream API
+digunakan secara ekstensif untuk menghitung total pengeluaran, mengelompokkan data per
+kategori, dan memfilter transaksi berdasarkan periode waktu.
+</p>
+
+<h2>2.5 RESTful API</h2>
+<p>
+REST (Representational State Transfer) adalah gaya arsitektur untuk membangun layanan web.
+RESTful API menggunakan HTTP method standar: <code>GET</code> (membaca data),
+<code>POST</code> (membuat data baru), <code>PUT</code> (memperbarui data), dan
+<code>DELETE</code> (menghapus data). Response dikirimkan dalam format JSON.
+</p>
+
+<h2>2.6 Spring Boot</h2>
+<p>
+Spring Boot adalah framework Java yang mempercepat pengembangan aplikasi berbasis Spring
+dengan konfigurasi minimal (<em>convention over configuration</em>). Spring Boot menyediakan
+embedded server (Tomcat), auto-configuration, dan dependency management via Maven/Gradle,
+sehingga pengembang dapat fokus pada logika bisnis tanpa banyak konfigurasi boilerplate.
+</p>
+
+<h2>2.7 Spring Data JPA</h2>
+<p>
+Spring Data JPA adalah modul Spring yang menyederhanakan akses database menggunakan
+Java Persistence API (JPA). Dengan meng-extend interface <code>JpaRepository</code>,
+developer mendapatkan operasi CRUD secara otomatis tanpa perlu menulis query SQL secara
+manual. Spring Data JPA juga mendukung <em>query method</em> yang dibuat hanya berdasarkan
+penamaan method.
+</p>
+
+<h2>2.8 MySQL</h2>
+<p>
+MySQL adalah sistem manajemen basis data relasional (RDBMS) open-source yang banyak
+digunakan dalam aplikasi web. Dalam proyek ini, MySQL dijalankan menggunakan dua opsi:
+Docker Container untuk lingkungan yang terisolasi, dan XAMPP untuk penggunaan tanpa Docker.
+Spring Boot terhubung ke MySQL melalui JDBC dengan konfigurasi pada file
+<code>application.properties</code>.
+</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB III — ANALISIS DAN PERANCANGAN
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB III</div>
+  <div class="bab-judul">Analisis dan Perancangan</div>
+</div>
+
+<h2>3.1 Analisis Kebutuhan</h2>
+<h3>3.1.1 Kebutuhan Fungsional</h3>
+<table>
+  <tr><th>No</th><th>Fitur</th><th>Deskripsi</th></tr>
+  <tr><td>1</td><td>Login</td><td>Pengguna dapat masuk menggunakan username dan password</td></tr>
+  <tr><td>2</td><td>Manajemen Kategori</td><td>CRUD kategori transaksi bertipe PEMASUKAN atau PENGELUARAN</td></tr>
+  <tr><td>3</td><td>Manajemen Transaksi</td><td>CRUD transaksi, filter per bulan, tampilkan total</td></tr>
+  <tr><td>4</td><td>Manajemen Budget</td><td>Set dan tampilkan budget per bulan dengan progress bar</td></tr>
+  <tr><td>5</td><td>Dashboard</td><td>Ringkasan statistik keuangan dengan grafik interaktif</td></tr>
+  <tr><td>6</td><td>Grafik Per Kategori</td><td>Doughnut chart pengeluaran per kategori</td></tr>
+  <tr><td>7</td><td>Grafik Bulanan</td><td>Bar chart perbandingan pemasukan vs pengeluaran 12 bulan</td></tr>
+</table>
+<p class="caption">Tabel 3.1 Kebutuhan Fungsional Sistem</p>
+
+<h3>3.1.2 Kebutuhan Non-Fungsional</h3>
+<ul>
+  <li><strong>Performa</strong>: Respons API kurang dari 500ms untuk operasi CRUD standar.</li>
+  <li><strong>Keamanan</strong>: Halaman dilindungi dengan pengecekan login via localStorage.</li>
+  <li><strong>Portabilitas</strong>: Database dapat dijalankan via Docker maupun XAMPP.</li>
+  <li><strong>Usability</strong>: Antarmuka responsif dengan desain yang bersih dan intuitif.</li>
+</ul>
+
+<h2>3.2 Perancangan Database</h2>
+<h3>3.2.1 Diagram Relasi Tabel</h3>
+<p>Database aplikasi terdiri dari 3 tabel dengan relasi sebagai berikut:</p>
+
+<pre>
+  ┌─────────────┐          ┌──────────────────┐
+  │  kategori   │          │    transaksi      │
+  ├─────────────┤    1:N   ├──────────────────┤
+  │ id (PK)     │◄─────────│ id (PK)           │
+  │ nama        │          │ jumlah            │
+  │ jenis       │          │ keterangan        │
+  └─────────────┘          │ tanggal           │
+                           │ kategori_id (FK)  │
+                           └──────────────────┘
+
+  ┌─────────────────┐
+  │     budget      │
+  ├─────────────────┤
+  │ id (PK)         │
+  │ bulan           │
+  │ tahun           │
+  │ jumlah_budget   │
+  └─────────────────┘
+</pre>
+<p class="caption">Gambar 3.1 Entity Relationship Diagram</p>
+
+<h3>3.2.2 Struktur Tabel</h3>
+
+<table>
+  <tr><th>Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+  <tr><td colspan="3" style="background:#e5e7eb;font-weight:bold">Tabel: kategori</td></tr>
+  <tr><td>id</td><td>BIGINT (PK, AI)</td><td>Primary key auto increment</td></tr>
+  <tr><td>nama</td><td>VARCHAR(255)</td><td>Nama kategori, harus unik</td></tr>
+  <tr><td>jenis</td><td>VARCHAR(50)</td><td>Nilai: PEMASUKAN atau PENGELUARAN</td></tr>
+  <tr><td colspan="3" style="background:#e5e7eb;font-weight:bold">Tabel: transaksi</td></tr>
+  <tr><td>id</td><td>BIGINT (PK, AI)</td><td>Primary key auto increment</td></tr>
+  <tr><td>jumlah</td><td>DOUBLE</td><td>Nominal transaksi dalam Rupiah</td></tr>
+  <tr><td>keterangan</td><td>VARCHAR(255)</td><td>Catatan opsional transaksi</td></tr>
+  <tr><td>tanggal</td><td>DATE</td><td>Tanggal transaksi (YYYY-MM-DD)</td></tr>
+  <tr><td>kategori_id</td><td>BIGINT (FK)</td><td>Referensi ke tabel kategori</td></tr>
+  <tr><td colspan="3" style="background:#e5e7eb;font-weight:bold">Tabel: budget</td></tr>
+  <tr><td>id</td><td>BIGINT (PK, AI)</td><td>Primary key auto increment</td></tr>
+  <tr><td>bulan</td><td>INT</td><td>Bulan (1-12)</td></tr>
+  <tr><td>tahun</td><td>INT</td><td>Tahun (contoh: 2026)</td></tr>
+  <tr><td>jumlah_budget</td><td>DOUBLE</td><td>Batas pengeluaran dalam Rupiah</td></tr>
+</table>
+<p class="caption">Tabel 3.2 Struktur Tabel Database</p>
+
+<h2>3.3 Perancangan Arsitektur Sistem</h2>
+<p>Aplikasi menggunakan arsitektur berlapis (Layered Architecture) yang terdiri dari:</p>
+<pre>
+  ┌─────────────────────────────────────────┐
+  │          FRONT-END (HTML/JS)            │
+  │   login.html │ index.html │ transaksi   │
+  └──────────────────┬──────────────────────┘
+                     │ HTTP Request (fetch API)
+  ┌──────────────────▼──────────────────────┐
+  │         CONTROLLER LAYER                │
+  │  @RestController - REST API Endpoints   │
+  └──────────────────┬──────────────────────┘
+                     │
+  ┌──────────────────▼──────────────────────┐
+  │           SERVICE LAYER                 │
+  │  Logika bisnis, Stream API, Lambda      │
+  └──────────────────┬──────────────────────┘
+                     │
+  ┌──────────────────▼──────────────────────┐
+  │         REPOSITORY LAYER                │
+  │  JpaRepository - Akses database         │
+  └──────────────────┬──────────────────────┘
+                     │
+  ┌──────────────────▼──────────────────────┐
+  │           DATABASE (MySQL)              │
+  │  kategori │ transaksi │ budget          │
+  └─────────────────────────────────────────┘
+</pre>
+<p class="caption">Gambar 3.2 Arsitektur Sistem</p>
+
+<h2>3.4 Perancangan REST API Endpoint</h2>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Deskripsi</th></tr>
+  <tr><td>POST</td><td>/api/auth/login</td><td>Login pengguna</td></tr>
+  <tr><td>GET</td><td>/api/kategori</td><td>Ambil semua kategori</td></tr>
+  <tr><td>POST</td><td>/api/kategori</td><td>Tambah kategori baru</td></tr>
+  <tr><td>PUT</td><td>/api/kategori/{id}</td><td>Update kategori</td></tr>
+  <tr><td>DELETE</td><td>/api/kategori/{id}</td><td>Hapus kategori</td></tr>
+  <tr><td>GET</td><td>/api/transaksi</td><td>Ambil semua transaksi</td></tr>
+  <tr><td>POST</td><td>/api/transaksi</td><td>Tambah transaksi baru</td></tr>
+  <tr><td>PUT</td><td>/api/transaksi/{id}</td><td>Update transaksi</td></tr>
+  <tr><td>DELETE</td><td>/api/transaksi/{id}</td><td>Hapus transaksi</td></tr>
+  <tr><td>GET</td><td>/api/transaksi/bulan/{b}/tahun/{t}</td><td>Filter transaksi per bulan (Stream)</td></tr>
+  <tr><td>GET</td><td>/api/transaksi/per-kategori/bulan/{b}/tahun/{t}</td><td>Pengeluaran per kategori (Map)</td></tr>
+  <tr><td>GET</td><td>/api/transaksi/tahun</td><td>Ambil tahun unik (Set)</td></tr>
+  <tr><td>GET</td><td>/api/budget</td><td>Ambil semua budget</td></tr>
+  <tr><td>POST</td><td>/api/budget</td><td>Set/update budget bulan tertentu</td></tr>
+  <tr><td>GET</td><td>/api/dashboard/bulan/{b}/tahun/{t}</td><td>Data dashboard &amp; grafik</td></tr>
+</table>
+<p class="caption">Tabel 3.3 Daftar REST API Endpoint</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB IV — IMPLEMENTASI
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB IV</div>
+  <div class="bab-judul">Implementasi</div>
+</div>
+
+<h2>4.1 Struktur Proyek</h2>
+<p>Proyek dibangun menggunakan Maven dengan struktur direktori sebagai berikut:</p>
+<pre>
+pitama-tugas-java/
+├── docker-compose.yml                    # Konfigurasi Docker MySQL
+├── database.sql                          # Script SQL manual
+├── pom.xml                               # Dependensi Maven
+└── src/
+    └── main/
+        ├── java/com/tugas/budgeting/
+        │   ├── BudgetingApplication.java # Entry point Spring Boot
+        │   ├── config/
+        │   │   └── CorsConfig.java       # Konfigurasi CORS
+        │   ├── entity/
+        │   │   ├── JenisTransaksi.java   # Enum
+        │   │   ├── Kategori.java         # Entity tabel kategori
+        │   │   ├── Transaksi.java        # Entity tabel transaksi
+        │   │   └── Budget.java           # Entity tabel budget
+        │   ├── repository/
+        │   │   ├── KategoriRepository.java
+        │   │   ├── TransaksiRepository.java
+        │   │   └── BudgetRepository.java
+        │   ├── service/
+        │   │   ├── KategoriService.java
+        │   │   ├── TransaksiService.java
+        │   │   └── BudgetService.java
+        │   └── controller/
+        │       ├── AuthController.java
+        │       ├── KategoriController.java
+        │       ├── TransaksiController.java
+        │       ├── BudgetController.java
+        │       └── DashboardController.java
+        └── resources/
+            ├── application.properties
+            ├── application-xampp.properties
+            └── static/
+                ├── login.html
+                ├── index.html
+                ├── transaksi.html
+                ├── kategori.html
+                ├── budget.html
+                └── assets/
+                    ├── app.js
+                    └── style.css
+</pre>
+<p class="caption">Gambar 4.1 Struktur Direktori Proyek</p>
+
+<h2>4.2 Implementasi OOP</h2>
+<h3>4.2.1 Enum JenisTransaksi</h3>
+<p>Enum digunakan untuk membatasi nilai jenis transaksi hanya pada dua nilai yang valid.</p>
+<pre>
+public enum JenisTransaksi {
+    PEMASUKAN, PENGELUARAN
+}
+</pre>
+
+<h3>4.2.2 Entity Kategori</h3>
+<p>
+Class <code>Kategori</code> merepresentasikan tabel <em>kategori</em> di database.
+Menggunakan anotasi JPA untuk pemetaan ORM (Object-Relational Mapping), dengan
+enkapsulasi data melalui getter dan setter.
+</p>
+<pre>
+@Entity
+@Table(name = "kategori")
+public class Kategori {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String nama;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private JenisTransaksi jenis;
+
+    public Kategori() {}
+
+    public Kategori(String nama, JenisTransaksi jenis) {
+        this.nama = nama;
+        this.jenis = jenis;
+    }
+
+    // Getter dan Setter
+    public Long getId()              { return id; }
+    public void setId(Long id)       { this.id = id; }
+    public String getNama()          { return nama; }
+    public void setNama(String nama) { this.nama = nama; }
+    public JenisTransaksi getJenis() { return jenis; }
+    public void setJenis(JenisTransaksi jenis) { this.jenis = jenis; }
+}
+</pre>
+
+<h3>4.2.3 Entity Transaksi</h3>
+<p>
+Class <code>Transaksi</code> memiliki relasi <code>ManyToOne</code> ke
+<code>Kategori</code>, menggambarkan prinsip <em>Association</em> dalam OOP.
+</p>
+<pre>
+@Entity
+@Table(name = "transaksi")
+public class Transaksi {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Double jumlah;
+
+    private String keterangan;
+
+    @Column(nullable = false)
+    private LocalDate tanggal;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "kategori_id", nullable = false)
+    private Kategori kategori;
+
+    // Konstruktor, getter, dan setter...
+}
+</pre>
+
+<h2>4.3 Implementasi Collection Framework</h2>
+<p>
+Ketiga jenis Collection (List, Map, Set) diimplementasikan dalam
+<code>TransaksiService.java</code>:
+</p>
+
+<h3>4.3.1 List — Mengambil Semua Data</h3>
+<pre>
+// Collection Framework - List: menyimpan koleksi transaksi berurutan
+public List&lt;Transaksi&gt; getAll() {
+    return transaksiRepository.findAllByOrderByTanggalDesc();
+}
+</pre>
+
+<h3>4.3.2 Map — Pengeluaran Per Kategori</h3>
+<pre>
+// Collection Framework - Map: key=nama kategori, value=total jumlah
+public Map&lt;String, Double&gt; getPengeluaranPerKategori(int bulan, int tahun) {
+    return getByBulan(bulan, tahun).stream()
+        .filter(t -> t.getKategori().getJenis() == JenisTransaksi.PENGELUARAN)
+        .collect(Collectors.groupingBy(
+            t -> t.getKategori().getNama(),
+            Collectors.summingDouble(Transaksi::getJumlah)
+        ));
+}
+</pre>
+
+<h3>4.3.3 Set — Tahun Unik</h3>
+<pre>
+// Collection Framework - Set: tidak ada duplikasi tahun
+public Set&lt;Integer&gt; getAllTahun() {
+    return transaksiRepository.findAll().stream()
+        .map(t -> t.getTanggal().getYear())
+        .collect(Collectors.toSet());
+}
+</pre>
+
+<h2>4.4 Implementasi Lambda Expression dan Stream API</h2>
+<p>
+Lambda Expression dan Stream API digunakan secara ekstensif di layer Service
+untuk memproses data keuangan secara fungsional dan efisien.
+</p>
+
+<h3>4.4.1 Filter Transaksi Per Bulan (Stream + Lambda)</h3>
+<pre>
+public List&lt;Transaksi&gt; getByBulan(int bulan, int tahun) {
+    LocalDate awal  = YearMonth.of(tahun, bulan).atDay(1);
+    LocalDate akhir = YearMonth.of(tahun, bulan).atEndOfMonth();
+    return transaksiRepository.findByTanggalBetween(awal, akhir);
+}
+</pre>
+
+<h3>4.4.2 Hitung Total Pengeluaran (Stream + mapToDouble)</h3>
+<pre>
+public Double getTotalPengeluaranBulan(int bulan, int tahun) {
+    return getByBulan(bulan, tahun).stream()
+        .filter(t -> t.getKategori().getJenis() == JenisTransaksi.PENGELUARAN) // Lambda
+        .mapToDouble(Transaksi::getJumlah)   // Method reference (bentuk Lambda)
+        .sum();                               // Terminal operation
+}
+</pre>
+
+<h3>4.4.3 Hitung Total Pemasukan (Stream + Lambda)</h3>
+<pre>
+public Double getTotalPemasukanBulan(int bulan, int tahun) {
+    return getByBulan(bulan, tahun).stream()
+        .filter(t -> t.getKategori().getJenis() == JenisTransaksi.PEMASUKAN)
+        .mapToDouble(Transaksi::getJumlah)
+        .sum();
+}
+</pre>
+
+<h3>4.4.4 Ringkasan Per Bulan (Stream + Iterasi)</h3>
+<pre>
+// Menghasilkan data 12 bulan untuk grafik bar
+public List&lt;Map&lt;String, Object&gt;&gt; getRingkasanPerBulan(int tahun) {
+    List&lt;Map&lt;String, Object&gt;&gt; hasil = new ArrayList&lt;&gt;();
+    for (int b = 1; b &lt;= 12; b++) {
+        int bulanFinal = b;
+        Map&lt;String, Object&gt; row = new HashMap&lt;&gt;();
+        row.put("bulan",       b);
+        row.put("pemasukan",   getTotalPemasukanBulan(bulanFinal, tahun));
+        row.put("pengeluaran", getTotalPengeluaranBulan(bulanFinal, tahun));
+        hasil.add(row);
+    }
+    return hasil;
+}
+</pre>
+
+<h3>4.4.5 Filter Kategori Pengeluaran (Stream di KategoriService)</h3>
+<pre>
+// Stream API + Lambda di KategoriService
+public List&lt;Kategori&gt; getPengeluaran() {
+    return kategoriRepository.findAll().stream()
+        .filter(k -> k.getJenis() == JenisTransaksi.PENGELUARAN)  // Lambda
+        .toList();
+}
+</pre>
+
+<h2>4.5 Implementasi JPA Repository</h2>
+<p>
+Setiap entity memiliki interface Repository yang meng-extend
+<code>JpaRepository</code>. Spring Data JPA secara otomatis menyediakan implementasi
+CRUD tanpa perlu menulis SQL.
+</p>
+<pre>
+// JPA Repository dengan query method otomatis
+@Repository
+public interface TransaksiRepository extends JpaRepository&lt;Transaksi, Long&gt; {
+
+    // Spring Data JPA membuat query: SELECT * FROM transaksi
+    // WHERE tanggal BETWEEN :start AND :end
+    List&lt;Transaksi&gt; findByTanggalBetween(LocalDate start, LocalDate end);
+
+    // SELECT * FROM transaksi WHERE kategori_id = :kategoriId
+    List&lt;Transaksi&gt; findByKategoriId(Long kategoriId);
+
+    // SELECT * FROM transaksi ORDER BY tanggal DESC
+    List&lt;Transaksi&gt; findAllByOrderByTanggalDesc();
+}
+</pre>
+
+<pre>
+@Repository
+public interface BudgetRepository extends JpaRepository&lt;Budget, Long&gt; {
+    // Query method: cari budget berdasarkan bulan DAN tahun
+    Optional&lt;Budget&gt; findByBulanAndTahun(Integer bulan, Integer tahun);
+}
+</pre>
+
+<h2>4.6 Implementasi RESTful API</h2>
+<p>
+Controller menggunakan anotasi <code>@RestController</code> dan <code>@RequestMapping</code>
+untuk mendefinisikan endpoint REST. Setiap method HTTP di-mapping ke operasi CRUD yang sesuai.
+</p>
+<pre>
+@RestController
+@RequestMapping("/api/transaksi")
+public class TransaksiController {
+
+    @Autowired
+    private TransaksiService transaksiService;
+
+    // GET - Read All
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Transaksi&gt;&gt; getAll() {
+        return ResponseEntity.ok(transaksiService.getAll());
+    }
+
+    // POST - Create
+    @PostMapping
+    public ResponseEntity&lt;Transaksi&gt; create(@RequestBody Transaksi transaksi) {
+        return ResponseEntity.ok(transaksiService.save(transaksi));
+    }
+
+    // PUT - Update
+    @PutMapping("/{id}")
+    public ResponseEntity&lt;Transaksi&gt; update(
+            @PathVariable Long id, @RequestBody Transaksi transaksi) {
+        try {
+            return ResponseEntity.ok(transaksiService.update(id, transaksi));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // DELETE - Delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity&lt;Void&gt; delete(@PathVariable Long id) {
+        transaksiService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    // GET Stream API - Filter per bulan
+    @GetMapping("/bulan/{bulan}/tahun/{tahun}")
+    public ResponseEntity&lt;List&lt;Transaksi&gt;&gt; getByBulan(
+            @PathVariable int bulan, @PathVariable int tahun) {
+        return ResponseEntity.ok(transaksiService.getByBulan(bulan, tahun));
+    }
+
+    // GET Stream API - Pengeluaran per kategori (Map)
+    @GetMapping("/per-kategori/bulan/{bulan}/tahun/{tahun}")
+    public ResponseEntity&lt;Map&lt;String, Double&gt;&gt; getPerKategori(
+            @PathVariable int bulan, @PathVariable int tahun) {
+        return ResponseEntity.ok(
+            transaksiService.getPengeluaranPerKategori(bulan, tahun));
+    }
+
+    // GET Collection Set - Tahun unik
+    @GetMapping("/tahun")
+    public ResponseEntity&lt;Set&lt;Integer&gt;&gt; getAllTahun() {
+        return ResponseEntity.ok(transaksiService.getAllTahun());
+    }
+}
+</pre>
+
+<h3>4.6.1 Dashboard Controller</h3>
+<pre>
+@RestController
+@RequestMapping("/api/dashboard")
+public class DashboardController {
+
+    @Autowired private TransaksiService transaksiService;
+    @Autowired private BudgetService    budgetService;
+
+    @GetMapping("/bulan/{bulan}/tahun/{tahun}")
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; getDashboard(
+            @PathVariable int bulan, @PathVariable int tahun) {
+
+        double pengeluaran = transaksiService.getTotalPengeluaranBulan(bulan, tahun);
+        double pemasukan   = transaksiService.getTotalPemasukanBulan(bulan, tahun);
+        double sisa        = budgetService.getSisaBudget(bulan, tahun, pengeluaran);
+
+        Map&lt;String, Object&gt; data = new HashMap&lt;&gt;();
+        data.put("totalPengeluaran",      pengeluaran);
+        data.put("totalPemasukan",        pemasukan);
+        data.put("sisaBudget",            sisa);
+        data.put("selisih",               pemasukan - pengeluaran);
+        data.put("pengeluaranPerKategori",
+            transaksiService.getPengeluaranPerKategori(bulan, tahun)); // Map
+        data.put("ringkasanPerBulan",
+            transaksiService.getRingkasanPerBulan(tahun));             // List
+        return ResponseEntity.ok(data);
+    }
+}
+</pre>
+
+<h2>4.7 Implementasi Front-End</h2>
+<p>
+Front-end dibangun menggunakan HTML5, CSS3, dan JavaScript murni (Vanilla JS)
+tanpa framework tambahan. File statis ditempatkan di
+<code>src/main/resources/static/</code> sehingga langsung dilayani oleh Spring Boot
+di port 8080.
+</p>
+<p>
+Integrasi antara front-end dan back-end dilakukan menggunakan Fetch API pada JavaScript
+untuk berkomunikasi dengan REST API yang telah dibuat.
+</p>
+<pre>
+// Fungsi API helper di app.js - integrasi front-end ke back-end
+async function apiGet(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Gagal mengambil data');
+    return res.json();
+}
+
+async function apiPost(url, data) {
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+</pre>
+<p>
+Grafik dashboard diimplementasikan menggunakan library Chart.js dengan dua jenis grafik:
+</p>
+<ul>
+  <li><strong>Doughnut Chart</strong> — Menampilkan proporsi pengeluaran per kategori.</li>
+  <li><strong>Bar Chart</strong> — Membandingkan pemasukan vs pengeluaran selama 12 bulan.</li>
+</ul>
+
+<h2>4.8 Fitur Poin Plus: Login dan Dashboard Grafik</h2>
+<h3>4.8.1 Login Sederhana</h3>
+<p>
+Login diimplementasikan dengan endpoint <code>POST /api/auth/login</code> yang
+memvalidasi username dan password yang dikonfigurasi di <code>application.properties</code>.
+Setelah login berhasil, status tersimpan di <code>localStorage</code> browser.
+</p>
+<pre>
+// application.properties
+app.username=admin
+app.password=admin123
+
+// AuthController.java
+@PostMapping("/login")
+public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; login(
+        @RequestBody Map&lt;String, String&gt; body) {
+
+    String username = body.get("username");
+    String password = body.get("password");
+
+    if (appUsername.equals(username) && appPassword.equals(password)) {
+        return ResponseEntity.ok(Map.of(
+            "success", true,
+            "message", "Login berhasil",
+            "username", username
+        ));
+    }
+    return ResponseEntity.status(401).body(Map.of(
+        "success", false,
+        "message", "Username atau password salah"
+    ));
+}
+</pre>
+
+<h3>4.8.2 Dashboard Grafik</h3>
+<p>
+Dashboard menampilkan 4 kartu statistik (total pemasukan, pengeluaran, sisa budget, selisih),
+grafik doughnut pengeluaran per kategori, dan grafik bar perbandingan bulanan.
+Layout menggunakan CSS Grid murni dengan pembagian 4 kolom.
+</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB V — PENGUJIAN
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB V</div>
+  <div class="bab-judul">Pengujian</div>
+</div>
+
+<h2>5.1 Pengujian REST API</h2>
+<table>
+  <tr><th>No</th><th>Endpoint</th><th>Method</th><th>Input</th><th>Expected Output</th><th>Status</th></tr>
+  <tr>
+    <td>1</td><td>/api/auth/login</td><td>POST</td>
+    <td>{"username":"admin","password":"admin123"}</td>
+    <td>{"success":true,"message":"Login berhasil"}</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>2</td><td>/api/kategori</td><td>GET</td>
+    <td>—</td>
+    <td>Array JSON berisi daftar kategori</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>3</td><td>/api/kategori</td><td>POST</td>
+    <td>{"nama":"Makan","jenis":"PENGELUARAN"}</td>
+    <td>Objek kategori yang baru dibuat</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>4</td><td>/api/transaksi</td><td>POST</td>
+    <td>{"jumlah":50000,"tanggal":"2026-06-01","kategori":{"id":1}}</td>
+    <td>Objek transaksi yang tersimpan</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>5</td><td>/api/transaksi/bulan/6/tahun/2026</td><td>GET</td>
+    <td>—</td>
+    <td>Array transaksi bulan Juni 2026</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>6</td><td>/api/transaksi/per-kategori/bulan/6/tahun/2026</td><td>GET</td>
+    <td>—</td>
+    <td>{"Makan":85000,"Transport":45000,...}</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>7</td><td>/api/transaksi/tahun</td><td>GET</td>
+    <td>—</td>
+    <td>[2026] (Set Integer)</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>8</td><td>/api/budget</td><td>POST</td>
+    <td>{"bulan":6,"tahun":2026,"jumlahBudget":3000000}</td>
+    <td>Objek budget yang tersimpan</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>9</td><td>/api/dashboard/bulan/6/tahun/2026</td><td>GET</td>
+    <td>—</td>
+    <td>JSON ringkasan keuangan lengkap</td>
+    <td>✓ Berhasil</td>
+  </tr>
+  <tr>
+    <td>10</td><td>/api/kategori/{id}</td><td>DELETE</td>
+    <td>id=1</td>
+    <td>HTTP 200 OK</td>
+    <td>✓ Berhasil</td>
+  </tr>
+</table>
+<p class="caption">Tabel 5.1 Hasil Pengujian REST API</p>
+
+<h2>5.2 Pengujian Antarmuka</h2>
+<table>
+  <tr><th>No</th><th>Halaman</th><th>Fungsi yang Diuji</th><th>Status</th></tr>
+  <tr><td>1</td><td>Login</td><td>Form login dengan validasi dan redirect</td><td>✓ Berhasil</td></tr>
+  <tr><td>2</td><td>Dashboard</td><td>Tampil statistik dan 2 grafik interaktif</td><td>✓ Berhasil</td></tr>
+  <tr><td>3</td><td>Dashboard</td><td>Progress bar budget berubah warna sesuai persentase</td><td>✓ Berhasil</td></tr>
+  <tr><td>4</td><td>Transaksi</td><td>Tambah, edit, hapus transaksi via modal</td><td>✓ Berhasil</td></tr>
+  <tr><td>5</td><td>Transaksi</td><td>Filter transaksi berdasarkan bulan dan tahun</td><td>✓ Berhasil</td></tr>
+  <tr><td>6</td><td>Transaksi</td><td>Summary pemasukan/pengeluaran di filter bar</td><td>✓ Berhasil</td></tr>
+  <tr><td>7</td><td>Kategori</td><td>Tampilan kartu grid dengan toggle jenis</td><td>✓ Berhasil</td></tr>
+  <tr><td>8</td><td>Budget</td><td>Set budget dengan form dan tampilkan riwayat</td><td>✓ Berhasil</td></tr>
+  <tr><td>9</td><td>Budget</td><td>Progress bar penggunaan budget per bulan</td><td>✓ Berhasil</td></tr>
+  <tr><td>10</td><td>Semua</td><td>Sidebar navigasi aktif sesuai halaman</td><td>✓ Berhasil</td></tr>
+</table>
+<p class="caption">Tabel 5.2 Hasil Pengujian Antarmuka</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BAB VI — KESIMPULAN
+═══════════════════════════════════════════════════════════ -->
+<div class="page">
+<div class="bab-header">
+  <div class="bab-num">BAB VI</div>
+  <div class="bab-judul">Kesimpulan dan Saran</div>
+</div>
+
+<h2>6.1 Kesimpulan</h2>
+<p>
+Berdasarkan hasil pengembangan dan pengujian aplikasi CatatKeu — Catatan Keuangan Pribadi,
+dapat disimpulkan bahwa:
+</p>
+<ol>
+  <li>
+    Aplikasi berhasil dibangun dengan arsitektur berlapis menggunakan Spring Boot sebagai
+    framework back-end, dengan pemisahan yang jelas antara layer Entity, Repository,
+    Service, dan Controller sesuai prinsip <strong>OOP</strong>.
+  </li>
+  <li>
+    <strong>Collection Framework</strong> (List, Map, Set) berhasil diimplementasikan
+    secara natural: List untuk menyimpan daftar data, Map untuk pengelompokan pengeluaran
+    per kategori, dan Set untuk mengambil tahun unik dari data transaksi.
+  </li>
+  <li>
+    <strong>Lambda Expression</strong> dan <strong>Stream API</strong> digunakan secara
+    ekstensif untuk memproses data keuangan, menghitung total pengeluaran/pemasukan,
+    dan menghasilkan data ringkasan bulanan secara fungsional dan efisien.
+  </li>
+  <li>
+    <strong>RESTful API</strong> berhasil dibangun dengan 15 endpoint yang mencakup
+    operasi CRUD untuk semua entitas serta endpoint analisis data menggunakan Stream API.
+  </li>
+  <li>
+    <strong>Spring Data JPA</strong> menyederhanakan akses database dengan query method
+    otomatis, menghilangkan kebutuhan penulisan SQL secara manual untuk operasi dasar.
+  </li>
+  <li>
+    Integrasi front-end dan back-end berhasil dilakukan, di mana halaman HTML/JavaScript
+    berkomunikasi dengan REST API menggunakan Fetch API dan merender data secara dinamis
+    termasuk grafik interaktif berbasis Chart.js.
+  </li>
+  <li>
+    Fitur poin plus berupa <strong>Login</strong> dan <strong>Dashboard Grafik</strong>
+    berhasil diimplementasikan dengan tampilan yang profesional dan fungsional.
+  </li>
+</ol>
+
+<h2>6.2 Saran</h2>
+<p>
+Untuk pengembangan lebih lanjut, beberapa saran yang dapat diberikan adalah:
+</p>
+<ol>
+  <li>
+    <strong>Autentikasi JWT</strong> — Mengimplementasikan JSON Web Token untuk keamanan
+    autentikasi yang lebih robust dibandingkan sistem login sederhana saat ini.
+  </li>
+  <li>
+    <strong>Multi-user</strong> — Menambahkan fitur registrasi dan manajemen pengguna
+    sehingga aplikasi dapat digunakan oleh banyak pengguna secara terpisah.
+  </li>
+  <li>
+    <strong>Export Laporan</strong> — Menambahkan fitur ekspor data ke format PDF atau
+    Excel untuk keperluan pelaporan keuangan.
+  </li>
+  <li>
+    <strong>Notifikasi</strong> — Menambahkan peringatan ketika pengeluaran mendekati
+    atau melebihi budget yang telah ditetapkan.
+  </li>
+  <li>
+    <strong>Deployment</strong> — Mendeploy aplikasi ke platform cloud (seperti Railway,
+    Heroku, atau VPS) agar dapat diakses dari mana saja.
+  </li>
+</ol>
+
+<hr style="margin-top:40px">
+<p style="text-align:center;font-size:11pt;color:#555;margin-top:16px">
+  &mdash; Laporan Ujian Akhir Semester &mdash;<br>
+  Pemrograman Java Lanjut &bull; [Nama Universitas] &bull; 2026
+</p>
+</div>
+
+</body>
+</html>
